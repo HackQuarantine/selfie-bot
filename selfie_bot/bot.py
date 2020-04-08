@@ -1,6 +1,8 @@
 import discord
 from discord.ext import commands
-from PIL import ImageOps
+from PIL import Image
+import requests
+from io import BytesIO
 from . import config
 from . import logging
 logging.init()
@@ -28,21 +30,35 @@ async def is_admin(ctx):
 async def get_photos(ctx):
     global log_channel
 
-def get_all_urls():
-    pass
+    urls = await get_all_urls()
+    logger.info(f"Collected {len(urls)} photo urls in total")
+
+    for url in urls:
+        save_photo(url)
+    logger.info("Saved photos")
+
+async def get_all_urls():
+    urls = []
+    selfie_channel = bot.get_channel(config.creds['selfie_channel_id'])
+    messages = await selfie_channel.history(limit=200).flatten()
+
+    for message in messages:
+        if len(message.attachments) > 0:
+            urls.append((message.attachments[0].url, message.id))
+
+    return urls
 
 def save_photo(url):
-    logger.debug(f'Download & process {url}')
+    logger.debug(f'Download & process {url[0]}')
 
-    image_loaded = False
     try:
-        response = requests.get(url, timeout=5)
+        response = requests.get(url[0], timeout=5)
         try:
             response.raise_for_status()
             try:
                 image = Image.open(BytesIO(response.content))
                 image = rotate_if_exif_specifies(image)
-                image_loaded = True
+                image.save(f"{url[1]}.png", optimize=True, quality=10)
             except OSError:
                 logger.error('Image decoding error')
 
@@ -51,3 +67,43 @@ def save_photo(url):
 
     except requests.exceptions.ConnectionError:
         logger.error('Network error')
+
+def rotate_if_exif_specifies(image):
+    try:
+        exif_tags = image._getexif()
+        if exif_tags is None:
+            # No EXIF tags, so we don't need to rotate
+            logger.debug('No EXIF data, so not transforming')
+            return image
+
+        value = exif_tags[274]
+    except KeyError:
+        # No rotation tag present, so we don't need to rotate
+        logger.debug('EXIF data present but no rotation tag, so not transforming')
+        return image
+
+    value_to_transform = {
+        1: (0, False),
+        2: (0, True),
+        3: (180, False),
+        4: (180, True),
+        5: (-90, True),
+        6: (-90, False),
+        7: (90, True),
+        8: (90, False)
+    }
+
+    try:
+        angle, flip = value_to_transform[value]
+    except KeyError:
+        logger.warn(f'EXIF rotation \'{value}\' unknown, not transforming')
+        return image
+
+    logger.debug(f'EXIF rotation \'{value}\' detected, rotating {angle} degrees, flip: {flip}')
+    if angle != 0:
+        image = image.rotate(angle)
+
+    if flip:
+        image = image.tranpose(Image.FLIP_LEFT_RIGHT)
+
+    return image
