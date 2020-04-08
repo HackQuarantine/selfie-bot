@@ -32,10 +32,12 @@ async def get_photos(ctx):
 
     urls = await get_all_urls()
     logger.info(f"Collected {len(urls)} photo urls in total")
+    await log_channel.send(f"Collected {len(urls)} photo urls in total")
 
     for url in urls:
-        save_photo(url)
-    logger.info("Saved photos")
+        await save_photo(url)
+    logger.info(f"Saved all {len(urls)} photos!")
+    await log_channel.send(f"Saved all {len(urls)} photos!")
 
 async def get_all_urls():
     urls = []
@@ -45,10 +47,11 @@ async def get_all_urls():
     for message in messages:
         if len(message.attachments) > 0:
             urls.append((message.attachments[0].url, message.id))
-
+            
     return urls
 
-def save_photo(url):
+async def save_photo(url):
+    global log_channel
     logger.debug(f'Download & process {url[0]}')
 
     try:
@@ -58,7 +61,9 @@ def save_photo(url):
             try:
                 image = Image.open(BytesIO(response.content))
                 image = rotate_if_exif_specifies(image)
-                image.save(f"{url[1]}.png", optimize=True, quality=10)
+                image.save(f"{url[1]}.jpg", optimize=True)
+                logger.info(f"Saved photo as {url[1]}.jpg")
+                await log_channel.send(f"Saved photo as `{url[1]}.jpg`")
             except OSError:
                 logger.error('Image decoding error')
 
