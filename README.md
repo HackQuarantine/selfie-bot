@@ -1,8 +1,10 @@
 # Selfie Scraper Discord Bot
 
-Discord bot to get selfies from Discord and save them locally
+Discord bot to get selfies from the `#selfies` channel and save them locally!
 
 Bot prefix is `$` by default.
+
+Use `$get_photos` to save all the photos.
 
 # Development
 
