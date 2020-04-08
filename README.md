@@ -2,6 +2,8 @@
 
 Discord bot to get selfies from Discord and save them locally
 
+Bot prefix is `$` by default.
+
 # Development
 
 To set up the environment

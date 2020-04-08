@@ -1,4 +1,6 @@
 {
     "token": "",
+    "log_channel_id": ,
+    "prefix": "$",
     "admin_ids": []
 }
