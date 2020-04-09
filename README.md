@@ -2,26 +2,19 @@
 
 Discord bot to get selfies from the `#selfies` channel and save them locally!
 
-Bot prefix is `$` by default.
-
-Use `$get_photos` to save all the photos.
-
 # Development
 
-To set up the environment
+To run the script:
 
 ```
-make env
+make
 ```
+
+This will automatically install all the dependencies. Make sure you have a
+`creds.json` filled in!
 
 To clean the environment
 
 ```
 make clean
-```
-
-To run the discord bot
-
-```
-make run
 ```

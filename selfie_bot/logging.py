@@ -1,6 +1,8 @@
 import sys
 import logging
 import datetime
+from . import storage
+from . import config
 
 def init():
     global logger
@@ -13,7 +15,9 @@ def init():
                                        , '%H:%M:%S')
     file_format = logging.Formatter('%(asctime)s %(levelname)5s %(module)11s: %(message)s'
                                     , '%d/%m/%y %H:%M:%S')
-    file_name = "hq_log_{}.log".format(datetime.datetime.now().strftime('%d-%m-%Y_%H:%M:%S'))
+
+    storage.make_path(config.creds['logging_dir'])
+    file_name = "{}/hq_log_{}.log".format(config.creds['logging_dir'], datetime.datetime.now().strftime('%d-%m-%Y_%H:%M:%S'))
     file_handler = logging.FileHandler(filename=file_name, encoding='utf-8', mode='w')
     file_handler.setFormatter(file_format)
     file_handler.setLevel(logging.INFO)
