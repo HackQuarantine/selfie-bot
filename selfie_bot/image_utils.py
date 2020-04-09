@@ -8,7 +8,7 @@ def save_image(uid, image_data):
     fname = storage.filename(uid)
     image = Image.open(image_data)
     image = rotate_if_exif_specifies(image)
-    image.save(fname, optimize=True)
+    image.convert('RGB').save(fname, optimize=True)
 
 def rotate_if_exif_specifies(image):
     try:
