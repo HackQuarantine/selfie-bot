@@ -1,6 +1,6 @@
 # Selfie Scraper Discord Bot
 
-Discord bot to get selfies from the `#selfies` channel and save them locally!
+Discord bot to get selfies from the `#selfie` channel and save them locally!
 
 ## How does it work?
 
