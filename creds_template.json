@@ -1,7 +1,8 @@
 {
     "token": "",
-    "selfie_chennel_id",
-    "log_channel_id": ,
+    "selfie_channel_id": null,
+    "log_channel_id": null,
     "prefix": "$",
-    "admin_ids": []
+    "storage_dir": "./images",
+    "logging_dir": "./logs"
 }

@@ -1,0 +1,3 @@
+[submodule "contrib/collage_maker"]
+	path = contrib/collage_maker
+	url = https://github.com/delimitry/collage_maker.git

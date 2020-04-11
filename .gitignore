@@ -132,3 +132,8 @@ creds.json
 
 *.png
 *.jpg
+
+images/*
+images-cropped/*
+logs/*
+
