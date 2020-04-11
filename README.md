@@ -2,7 +2,11 @@
 
 Discord bot to get selfies from the `#selfies` channel and save them locally!
 
-# Development
+## How does it work?
+
+The bot gets all the photos sent in the channel specified. The bot then saves them inside the local repository on your computer. You can also get it to generate a collage of all the photos together. All of this processing happens locally on the machine.
+
+## Development
 
 To run the script:
 
