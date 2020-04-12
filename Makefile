@@ -31,3 +31,7 @@ images-cropped: images
 
 montage: images-cropped
 	. .venv/bin/activate; python ./contrib/collage_maker/collage_maker.py -f ./images-cropped -o montage.jpg -w 1920 -i 360 -s
+
+
+montage-horizontal: images-cropped
+	montage -background none -geometry 1920x1080 -tile `ls ./images-cropped | wc -l`x1 ./images-cropped/* montage-horizontal.png
