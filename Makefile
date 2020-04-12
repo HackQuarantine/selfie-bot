@@ -34,4 +34,4 @@ montage: images-cropped
 
 
 montage-horizontal: images-cropped
-	ls -d ./images-cropped/*.png | xargs -n 8 echo | xargs -I% bash -c "montage -background none -geometry 1920x1080 -tile x1 % out/montage-horizontal-\`dd if=/dev/urandom bs=1 count=4 2>/dev/null| xxd -ps\`.png"
+	ls -d ./images-cropped/* | xargs -n 10 echo | xargs -I% bash -c "montage -background none -geometry 1920x1080 -tile x1 % out/montage-horizontal-\`dd if=/dev/urandom bs=1 count=4 2>/dev/null| xxd -ps\`.png"
