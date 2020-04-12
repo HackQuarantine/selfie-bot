@@ -23,6 +23,8 @@ def rotate_if_exif_specifies(image):
         # No rotation tag present, so we don't need to rotate
         logger.debug('EXIF data present but no rotation tag, so not transforming')
         return image
+    except AttributeError:
+        return image
 
     value_to_transform = {
         1: (0, False),
